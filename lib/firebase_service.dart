@@ -5,7 +5,7 @@ import 'package:smash_flutter/domain/model/room_dto.dart';
 
 import 'domain/model/room.dart';
 
-class FirebaseFactory {
+class FirebaseService {
   FirebaseDatabase database = FirebaseDatabase.instance;
   DatabaseReference ref = FirebaseDatabase.instance.ref().child('rooms');
 
@@ -24,7 +24,8 @@ class FirebaseFactory {
         asd2[key.toString()] = value;
       });
       RoomDTO asd3 = RoomDTO.fromJson(asd2);
-      roomController.add(Room.fromDTO(RoomDTO.fromJson(asd2)));
+      Room room = Room.fromDTO(RoomDTO.fromJson(asd2));
+      roomController.add(room);
       print(asd3.key);
     });
   }
