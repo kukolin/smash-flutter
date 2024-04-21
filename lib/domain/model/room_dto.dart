@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:smash_flutter/domain/model/player.dart';
 import 'package:smash_flutter/domain/model/player_dto.dart';
 
 part 'room_dto.g.dart';

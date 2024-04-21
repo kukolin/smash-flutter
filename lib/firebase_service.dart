@@ -23,10 +23,8 @@ class FirebaseService {
       asd.forEach((key, value) {
         asd2[key.toString()] = value;
       });
-      RoomDTO asd3 = RoomDTO.fromJson(asd2);
       Room room = Room.fromDTO(RoomDTO.fromJson(asd2));
       roomController.add(room);
-      print(asd3.key);
     });
   }
 }
