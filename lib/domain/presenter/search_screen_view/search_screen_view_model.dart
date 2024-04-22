@@ -1,7 +1,17 @@
+import 'package:smash_flutter/domain/model/room.dart';
+import 'package:smash_flutter/firebase_service.dart';
+
 class SearchScreenViewModel {
-  SearchScreenViewModel();
+  final FirebaseService _firebaseService;
+  SearchScreenViewModel(this._firebaseService);
 
-  onSubmitButton(void Function() callback) {
-
+  Future<void> onSubmitButton(String input, void Function(Room room) callback) async {
+    var room = await _firebaseService.getRoom(input);
+    if(room.key.isNotEmpty) {
+      callback(room);
+    }
+    else {
+      //TODO: Mensaje de error
+    }
   }
 }

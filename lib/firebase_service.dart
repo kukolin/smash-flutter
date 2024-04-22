@@ -15,16 +15,27 @@ class FirebaseService {
     return ref.child(roomId).child("room");
   }
   
-  void subscribe() {
-    ref.child("SMPHWH").child("room").onValue.listen((event) {
-      DataSnapshot dataSnapshot = event.snapshot;
-      Map<dynamic, dynamic> asd = dataSnapshot.value as dynamic;
-      Map<String, dynamic> asd2 = {};
-      asd.forEach((key, value) {
-        asd2[key.toString()] = value;
-      });
-      Room room = Room.fromDTO(RoomDTO.fromJson(asd2));
-      roomController.add(room);
+  StreamSubscription<DatabaseEvent> subscribe() {
+    return ref.child("SMPHWH").child("room").onValue.listen((event) {
+      roomController.add(_snapshotToRoom(event.snapshot.value));
     });
+  }
+
+  Future<Room> getRoom(String roomId) async {
+    final snapshot = await ref.child(roomId).child("room").get();
+    if (snapshot.exists) {
+      return _snapshotToRoom(snapshot.value);
+    } else {
+      return Room.empty();
+    }
+  }
+
+  Room _snapshotToRoom(Object? snapshot) {
+    Map<dynamic, dynamic> roomAsMap = snapshot as dynamic;
+    Map<String, dynamic> roomAsStringMap = {};
+    roomAsMap.forEach((key, value) {
+      roomAsStringMap[key.toString()] = value;
+    });
+    return Room.fromDTO(RoomDTO.fromJson(roomAsStringMap));
   }
 }

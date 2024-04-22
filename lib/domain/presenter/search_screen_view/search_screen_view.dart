@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:smash_flutter/domain/factory/viewmodel_factory.dart';
+import 'package:smash_flutter/domain/model/room.dart';
 import 'package:smash_flutter/domain/presenter/room_screen/room_screen_view.dart';
 import 'package:smash_flutter/domain/presenter/search_screen_view/search_screen_view_model.dart';
 
@@ -46,14 +47,18 @@ class _SearchScreenViewState extends State<SearchScreenView> {
             ),
           ),
           ElevatedButton(
-            onPressed: () =>
-                _viewModel.onSubmitButton(
-                    () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const Scaffold(body: RoomScreenView()),
-                      ),
-                    )), child: const Text("Buscar"),),
+            onPressed: () => _viewModel.onSubmitButton(_controller.value.text, (Room room) => _navigateCallback(room)),
+            child: const Text("Buscar"),
+          ),
         ],
+      ),
+    );
+  }
+
+  void _navigateCallback(Room room) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => Scaffold(body: RoomScreenView(room)),
       ),
     );
   }

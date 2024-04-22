@@ -14,13 +14,15 @@ class Room {
   Room(this.cardStack, this.currentTurn, this.key, this.name, this.players,
       this.started);
 
+  factory Room.empty() => Room([], "", "", "", [], false);
+
   static Room fromDTO(RoomDTO roomDTO) {
     return Room(
         roomDTO.cardStack ?? [],
-        roomDTO.currentTurn!,
-        roomDTO.key!,
-        roomDTO.name!,
-        roomDTO.players!.cast<Player>(),
-        roomDTO.started!);
+        roomDTO.currentTurn ?? "",
+        roomDTO.key ?? "",
+        roomDTO.name ?? "",
+        roomDTO.players?.cast<Player>() ?? [],
+        roomDTO.started ?? false);
   }
 }
