@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:smash_flutter/domain/factory/viewmodel_factory.dart';
 import 'package:smash_flutter/domain/model/player.dart';
+import 'package:smash_flutter/domain/model/room.dart';
 import 'package:smash_flutter/domain/presenter/game_screen/game_screen_view_model.dart';
-import 'package:smash_flutter/domain/presenter/home_screen/home_screen_view_model.dart';
-import 'package:smash_flutter/domain/presenter/search_screen/search_screen_view.dart';
 
 class GameScreenView extends StatefulWidget {
-  final List<Player> initialPlayers;
+  final Room initialRoom;
 
-  const GameScreenView(this.initialPlayers, {super.key});
+  const GameScreenView(this.initialRoom, {super.key});
 
   @override
   State<GameScreenView> createState() => _GameScreenViewState();
@@ -19,7 +18,7 @@ class _GameScreenViewState extends State<GameScreenView> {
 
   @override
   void initState() {
-    _viewModel.onWidgetInitialize(widget.initialPlayers);
+    _viewModel.onWidgetInitialize(widget.initialRoom);
     super.initState();
   }
 
@@ -64,12 +63,12 @@ class _GameScreenViewState extends State<GameScreenView> {
   }
 
   Widget _buildBody() {
-    return const Column(
+    return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisSize: MainAxisSize.max,
       children: [
-        Text("0", style: TextStyle(fontSize: 50)),
+        Text(_viewModel.room.cardStack.lastOrNull?.toString() ?? "", style: const TextStyle(fontSize: 50)),
       ],
     );
   }

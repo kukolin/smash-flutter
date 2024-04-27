@@ -6,20 +6,22 @@ import 'package:smash_flutter/firebase_service.dart';
 
 class RoomScreenViewModel extends ChangeNotifier {
   final FirebaseService _firebaseService;
-  late StreamSubscription? _subscription;
+  final List<StreamSubscription> _disposeBag = [];
   Room room;
 
   RoomScreenViewModel(this.room, this._firebaseService);
 
   void onWidgetInitialize() {
-    _subscription = _firebaseService.subscribe();
-    _firebaseService.roomController.stream.listen((newRoom) {
+    var subscription2 = _firebaseService.initializeDatabaseForRoom(room.key);
+    var subscription1 = _firebaseService.roomController.stream.listen((newRoom) {
       room = newRoom;
       notifyListeners();
     });
+    _disposeBag.add(subscription1);
+    _disposeBag.add(subscription2);
   }
 
   void onWidgetDestroy() {
-    _subscription?.cancel();
+    for (var element in _disposeBag) { element.cancel();}
   }
 }

@@ -15,8 +15,8 @@ class FirebaseService {
     return ref.child(roomId).child("room");
   }
   
-  StreamSubscription<DatabaseEvent> subscribe() {
-    return ref.child("SMPHWH").child("room").onValue.listen((event) {
+  StreamSubscription<DatabaseEvent> initializeDatabaseForRoom(String roomId) {
+    return ref.child(roomId).child("room").onValue.listen((event) {
       roomController.add(_snapshotToRoom(event.snapshot.value));
     });
   }

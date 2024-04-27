@@ -10,14 +10,5 @@ class HomeScreenViewModel extends ChangeNotifier{
   HomeScreenViewModel(this.firebaseService);
 
   void onWidgetInitialize() {
-    _subscribe();
-    firebaseService.subscribe();
-  }
-
-  void _subscribe(){
-    firebaseService.roomController.stream.listen((room) {
-      roomId = room.key;
-      notifyListeners();
-    });
   }
 }
