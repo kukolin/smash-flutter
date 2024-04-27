@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smash_flutter/domain/factory/viewmodel_factory.dart';
 import 'package:smash_flutter/domain/model/room.dart';
+import 'package:smash_flutter/domain/presenter/game_screen/game_screen_view.dart';
 import 'package:smash_flutter/domain/presenter/room_screen/room_screen_view_model.dart';
+import 'package:smash_flutter/domain/presenter/utils/view_utils.dart';
 
 class RoomScreenView extends StatefulWidget {
   final Room foundRoom;
@@ -32,13 +34,16 @@ class _RoomScreenViewState extends State<RoomScreenView> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text("Gente en la sala: ${_viewModel.room.players.length}/4", style: const TextStyle(fontSize: 25),),
+                        Text(
+                          "Gente en la sala: ${_viewModel.room.players.length}/4",
+                          style: const TextStyle(fontSize: 25),
+                        ),
                         buildPlayersColumn(),
                         _space(),
                         const Text("ID de sala", style: TextStyle(fontSize: 25)),
                         Text(_viewModel.room.key, style: const TextStyle(fontSize: 20)),
                         _space(),
-                        ElevatedButton(onPressed: (){}, child: const Text("Empezar partida", style: TextStyle(fontSize: 20)),)
+                        const RedirectButton("Iniciar partida", GameScreenView())
                       ],
                     ))));
   }
