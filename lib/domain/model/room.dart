@@ -5,12 +5,12 @@ import 'package:smash_flutter/domain/model/player_dto.dart';
 import 'package:smash_flutter/domain/model/room_dto.dart';
 
 class Room {
-  final List<int> cardStack;
-  final String currentTurn;
-  final String key;
-  final String name;
-  final List<Player> players;
-  final bool started;
+  List<int> cardStack;
+  String currentTurn;
+  String key;
+  String name;
+  List<Player> players;
+  bool started;
 
   Room(this.cardStack, this.currentTurn, this.key, this.name, this.players,
       this.started);

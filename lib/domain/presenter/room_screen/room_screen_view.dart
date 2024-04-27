@@ -43,7 +43,7 @@ class _RoomScreenViewState extends State<RoomScreenView> {
                         const Text("ID de sala", style: TextStyle(fontSize: 25)),
                         Text(_viewModel.room.key, style: const TextStyle(fontSize: 20)),
                         _space(),
-                        const RedirectButton("Iniciar partida", GameScreenView())
+                        RedirectButton("Iniciar partida", GameScreenView(_viewModel.room.players))
                       ],
                     ))));
   }
