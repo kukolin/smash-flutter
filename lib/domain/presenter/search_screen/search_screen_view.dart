@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:smash_flutter/domain/factory/viewmodel_factory.dart';
 import 'package:smash_flutter/domain/model/room.dart';
 import 'package:smash_flutter/domain/presenter/room_screen/room_screen_view.dart';
-import 'package:smash_flutter/domain/presenter/search_screen_view/search_screen_view_model.dart';
+import 'package:smash_flutter/domain/presenter/search_screen/search_screen_view_model.dart';
 
 class SearchScreenView extends StatefulWidget {
   const SearchScreenView({super.key});

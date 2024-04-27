@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:smash_flutter/domain/presenter/home_page/home_page_view.dart';
+import 'package:smash_flutter/domain/presenter/home_screen/home_screen_view.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -55,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
 
     return const Scaffold(
-      body: HomePageView(),
+      body: HomeScreenView(),
     );
   }
 }

@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:smash_flutter/firebase_service.dart';
 
-class HomePageViewModel extends ChangeNotifier{
+class HomeScreenViewModel extends ChangeNotifier{
 
   String roomId = "a";
 
   FirebaseService firebaseService;
 
-  HomePageViewModel(this.firebaseService);
+  HomeScreenViewModel(this.firebaseService);
 
   void onWidgetInitialize() {
     _subscribe();

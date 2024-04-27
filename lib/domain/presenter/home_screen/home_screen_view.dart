@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:smash_flutter/domain/factory/viewmodel_factory.dart';
-import 'package:smash_flutter/domain/presenter/home_page/home_page_view_model.dart';
-import 'package:smash_flutter/domain/presenter/search_screen_view/search_screen_view.dart';
+import 'package:smash_flutter/domain/presenter/home_screen/home_screen_view_model.dart';
+import 'package:smash_flutter/domain/presenter/search_screen/search_screen_view.dart';
 
-class HomePageView extends StatefulWidget {
-  const HomePageView({super.key});
+class HomeScreenView extends StatefulWidget {
+  const HomeScreenView({super.key});
 
   @override
-  State<HomePageView> createState() => _HomePageViewState();
+  State<HomeScreenView> createState() => _HomeScreenViewState();
 }
 
-class _HomePageViewState extends State<HomePageView> {
-  final HomePageViewModel _viewModel = ViewModelFactory.getHomePageViewModel();
+class _HomeScreenViewState extends State<HomeScreenView> {
+  final HomeScreenViewModel _viewModel = ViewModelFactory.getHomePageViewModel();
 
   @override
   void initState() {
