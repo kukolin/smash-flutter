@@ -6,6 +6,7 @@ import 'package:smash_flutter/domain/presenter/room_screen/room_screen_view_mode
 
 class RoomScreenView extends StatefulWidget {
   final Room foundRoom;
+
   const RoomScreenView(this.foundRoom, {super.key});
 
   @override
@@ -25,6 +26,28 @@ class _RoomScreenViewState extends State<RoomScreenView> {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
         create: (_) => _viewModel,
-        child: Center(child: Consumer<RoomScreenViewModel>(builder: (_, viewModel, __) => Text(viewModel.room.key))));
+        child: Center(
+            child: Consumer<RoomScreenViewModel>(
+                builder: (_, viewModel, __) => Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text("Gente en la sala: ${_viewModel.room.players.length}/4", style: const TextStyle(fontSize: 25),),
+                        buildPlayersColumn(),
+                        _space(),
+                        const Text("ID de sala", style: TextStyle(fontSize: 25)),
+                        Text(_viewModel.room.key, style: const TextStyle(fontSize: 20)),
+                        _space(),
+                        ElevatedButton(onPressed: (){}, child: const Text("Empezar partida", style: TextStyle(fontSize: 20)),)
+                      ],
+                    ))));
+  }
+
+  SizedBox _space() => const SizedBox(height: 60);
+
+  Column buildPlayersColumn() {
+    return Column(
+      children: _viewModel.room.players.map((e) => Text(e.name, style: const TextStyle(fontSize: 20))).toList(),
+    );
   }
 }

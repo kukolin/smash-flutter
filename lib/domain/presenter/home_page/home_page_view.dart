@@ -57,7 +57,7 @@ class RedirectButton extends StatelessWidget {
           builder: (context) => Scaffold(body: screen),
         ),
       ),
-      child: Text(text),
+      child: Text(text, style: const TextStyle(fontSize: 20)),
     );
   }
 }

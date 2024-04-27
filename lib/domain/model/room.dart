@@ -1,6 +1,7 @@
 import 'dart:core';
 
 import 'package:smash_flutter/domain/model/player.dart';
+import 'package:smash_flutter/domain/model/player_dto.dart';
 import 'package:smash_flutter/domain/model/room_dto.dart';
 
 class Room {
@@ -22,7 +23,7 @@ class Room {
         roomDTO.currentTurn ?? "",
         roomDTO.key ?? "",
         roomDTO.name ?? "",
-        roomDTO.players?.cast<Player>() ?? [],
+        (roomDTO.players ?? []).map((e) => Player.fromDto(e)).toList(),
         roomDTO.started ?? false);
   }
 }
