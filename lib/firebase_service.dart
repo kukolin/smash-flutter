@@ -14,7 +14,7 @@ class FirebaseService {
   DatabaseReference getRoomRef(String roomId) {
     return ref.child(roomId).child("room");
   }
-  
+
   StreamSubscription<DatabaseEvent> initializeDatabaseForRoom(String roomId) {
     return ref.child(roomId).child("room").onValue.listen((event) {
       roomController.add(_snapshotToRoom(event.snapshot.value));
@@ -37,5 +37,9 @@ class FirebaseService {
       roomAsStringMap[key.toString()] = value;
     });
     return Room.fromDTO(RoomDTO.fromJson(roomAsStringMap));
+  }
+
+  void saveRoomData(Room room) {
+    ref.child(room.key).child("room").update(RoomDTO.fromRoom(room).toJson());
   }
 }

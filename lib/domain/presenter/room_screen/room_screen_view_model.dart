@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:math';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:smash_flutter/domain/model/room.dart';
 import 'package:smash_flutter/firebase_service.dart';
@@ -22,6 +24,25 @@ class RoomScreenViewModel extends ChangeNotifier {
   }
 
   void onWidgetDestroy() {
-    for (var element in _disposeBag) { element.cancel();}
+    for (var element in _disposeBag) {
+      element.cancel();
+    }
+  }
+
+  void shuffleAndAssignCard() {
+    List<int> cards = [];
+    for (var i = 1; i <= 4; i++) {
+      for (var j = 1; j <= 15; j++) {
+        cards.add(j);
+      }
+    }
+    cards.shuffle(Random());
+    var chunkSize = cards.length / room.players.length;
+    var cardsToGive = cards.slices(chunkSize.toInt()).toList();
+    for (final (index, player) in room.players.indexed) {
+      player.cards = cardsToGive[index];
+    }
+    room.started = true;
+    _firebaseService.saveRoomData(room);
   }
 }

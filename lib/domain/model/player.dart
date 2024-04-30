@@ -3,7 +3,7 @@ import 'package:smash_flutter/domain/model/player_dto.dart';
 class Player {
   final String id;
   final String name;
-  final List<int> cards;
+  List<int> cards;
   final bool isMe;
   final bool turnEnabled;
 
