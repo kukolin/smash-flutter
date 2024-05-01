@@ -4,7 +4,8 @@ import 'package:smash_flutter/domain/factory/viewmodel_factory.dart';
 import 'package:smash_flutter/domain/presenter/create_name_screen/create_name_screen_view_model.dart';
 
 class CreateNameScreenView extends StatefulWidget {
-  const CreateNameScreenView({super.key});
+  final bool allowBack;
+  const CreateNameScreenView({this.allowBack = false, super.key});
 
   @override
   State<CreateNameScreenView> createState() => _CreateNameScreenViewState();
@@ -30,7 +31,7 @@ class _CreateNameScreenViewState extends State<CreateNameScreenView> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-        onPopInvoked: (_) => false,
+        onPopInvoked: (_) => widget.allowBack,
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

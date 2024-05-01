@@ -6,6 +6,7 @@ import 'package:uuid/uuid.dart';
 class HomeScreenViewModel extends ChangeNotifier{
 
   String roomId = "a";
+  String myName = "";
 
   final InMemoryUserRepository _userDataRepository;
 
@@ -19,6 +20,8 @@ class HomeScreenViewModel extends ChangeNotifier{
     if(myName == null) {
       navigateCreateNameCallback();
     } else {
+      this.myName = myName;
+      notifyListeners();
       _userDataRepository.saveMyName(myName);
     }
   }
@@ -27,5 +30,15 @@ class HomeScreenViewModel extends ChangeNotifier{
     var uuid = const Uuid().v4();
     await prefs.setString('myId', uuid.substring(24));
     return uuid.substring(24);
+  }
+
+  void onNameEditTap(Future<void> Function({bool allowBack}) navigateCreateNameCallback) async {
+    await navigateCreateNameCallback(allowBack: true);
+    _updateName();
+  }
+
+  void _updateName() {
+    myName = _userDataRepository.getMyName();
+    notifyListeners();
   }
 }

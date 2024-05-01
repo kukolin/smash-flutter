@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:smash_flutter/domain/factory/viewmodel_factory.dart';
 import 'package:smash_flutter/domain/presenter/create_name_screen/create_name_screen_view.dart';
 import 'package:smash_flutter/domain/presenter/home_screen/home_screen_view_model.dart';
@@ -12,7 +14,7 @@ class HomeScreenView extends StatefulWidget {
   State<HomeScreenView> createState() => _HomeScreenViewState();
 }
 
-class _HomeScreenViewState extends State<HomeScreenView> {
+class _HomeScreenViewState extends State<HomeScreenView> with RouteAware {
   final HomeScreenViewModel _viewModel = ViewModelFactory.getHomePageViewModel();
 
   @override
@@ -23,24 +25,52 @@ class _HomeScreenViewState extends State<HomeScreenView> {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            RedirectButton("Buscar sala", SearchScreenView()),
-            SizedBox(height: 20,),
-            RedirectButton("Crear sala", SearchScreenView()),
-            SizedBox(height: 50,),
-          ]),
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        GestureDetector(
+          onTap: () => _viewModel.onNameEditTap(_navigateCallback),
+          child: Row(
+            children: [
+              ChangeNotifierProvider(
+                create: (_) => _viewModel,
+                child: Consumer<HomeScreenViewModel>(
+                  builder: (_, viewModel, __) => Text("Usuario: ${_viewModel.myName}", style: const TextStyle(fontSize: 20)),
+                ),
+              ),
+              const SizedBox(width: 10,),
+              const Icon(
+                Icons.mode_edit,
+              ),
+            ],
+          ),
+        ),
+        const Center(
+          child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                RedirectButton("Buscar sala", SearchScreenView()),
+                SizedBox(
+                  height: 20,
+                ),
+                RedirectButton("Crear sala", SearchScreenView()),
+                SizedBox(
+                  height: 50,
+                ),
+              ]),
+        ),
+      ],
     );
   }
 
-  void _navigateCallback() {
-    Navigator.of(context).push(
+  Future<void> _navigateCallback({bool allowBack = false}) {
+    return Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const Scaffold(body: CreateNameScreenView()),
+        builder: (context) => Scaffold(body: CreateNameScreenView(allowBack: allowBack)),
       ),
     );
   }
