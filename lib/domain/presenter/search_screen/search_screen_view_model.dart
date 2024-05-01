@@ -1,17 +1,55 @@
+import 'package:collection/collection.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:smash_flutter/domain/model/player.dart';
 import 'package:smash_flutter/domain/model/room.dart';
+import 'package:smash_flutter/domain/unpoquitodeinfra/repositories/in_memory_id_repository.dart';
 import 'package:smash_flutter/firebase_service.dart';
 
-class SearchScreenViewModel {
+class SearchScreenViewModel extends ChangeNotifier {
   final FirebaseService _firebaseService;
-  SearchScreenViewModel(this._firebaseService);
+  final InMemoryIdRepository _idRepository;
+  String errorMessage = "";
 
-  Future<void> onSubmitButton(String input, void Function(Room room) callback) async {
+  SearchScreenViewModel(this._firebaseService, this._idRepository);
+
+  Future<void> onSubmitButton(String input, void Function(Room room) redirectCallback) async {
+    errorMessage = "";
     var room = await _firebaseService.getRoom(input);
-    if(room.key.isNotEmpty) {
-      callback(room);
+    _checkIfRoomExists(room);
+    _checkIfRoomIsFull(room);
+    _checkIfImJoined(room);
+    if (errorMessage.isEmpty) {
+      redirectCallback(room);
     }
-    else {
-      //TODO: Mensaje de error
+  }
+
+  void _checkIfRoomIsFull(Room room) {
+    if (room.players.length >= 4) {
+      errorMessage = "Sala llena. Máximo 4 jugadores.";
+      notifyListeners();
     }
+  }
+
+  void _checkIfRoomExists(Room room) {
+    if (room.key.isEmpty) {
+      errorMessage = "No se encuentra la sala.";
+      notifyListeners();
+    }
+  }
+
+  void _checkIfImJoined(Room room) {
+    var foundPlayer = room.players.firstWhereOrNull((element) => element.id == _idRepository.getMyId());
+    if (foundPlayer == null && room.players.length < 4) {
+      _addMeToDatabase(room);
+    } else {
+      errorMessage = "";
+      notifyListeners();
+    }
+  }
+
+  void _addMeToDatabase(Room room) {
+    var me = Player(_idRepository.getMyId(), "nombre", [], false, false);
+    room.players.add(me);
+    _firebaseService.saveRoomData(room);
   }
 }

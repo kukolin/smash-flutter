@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:smash_flutter/domain/factory/viewmodel_factory.dart';
 import 'package:smash_flutter/domain/model/room.dart';
 import 'package:smash_flutter/domain/presenter/room_screen/room_screen_view.dart';
@@ -50,6 +51,12 @@ class _SearchScreenViewState extends State<SearchScreenView> {
             onPressed: () => _viewModel.onSubmitButton(_controller.value.text, (Room room) => _navigateCallback(room)),
             child: const Text("Buscar"),
           ),
+          ChangeNotifierProvider(
+            create: (_) => _viewModel,
+            child: Consumer<SearchScreenViewModel>(
+              builder: (_, viewModel, __) => Text(_viewModel.errorMessage),
+            ),
+          )
         ],
       ),
     );
