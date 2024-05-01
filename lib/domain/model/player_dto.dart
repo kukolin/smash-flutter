@@ -8,15 +8,14 @@ class PlayerDTO {
   final String? id;
   final String? name;
   final List<int>? cards;
-  final bool? isMe;
-  final bool? turnEnabled;
+  final bool? isOwner;
 
-  PlayerDTO(this.id, this.name, this.cards, this.isMe, this.turnEnabled);
+  PlayerDTO(this.id, this.name, this.cards, this.isOwner);
 
   factory PlayerDTO.fromJson(Map<String, dynamic> json) => _$PlayerDTOFromJson(json);
 
   factory PlayerDTO.fromPlayer(Player player) =>
-      PlayerDTO(player.id, player.name, player.cards, player.isMe, player.turnEnabled);
+      PlayerDTO(player.id, player.name, player.cards, player.isOwner);
 
   Map<String, dynamic> toJson() => _$PlayerDTOToJson(this);
 }

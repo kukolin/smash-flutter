@@ -48,7 +48,7 @@ class SearchScreenViewModel extends ChangeNotifier {
   }
 
   void _addMeToDatabase(Room room) {
-    var me = Player(_userDataRepository.getMyId(), _userDataRepository.getMyName(), [], false, false);
+    var me = Player(_userDataRepository.getMyId(), _userDataRepository.getMyName(), [], false);
     room.players.add(me);
     _firebaseService.saveRoomData(room);
   }

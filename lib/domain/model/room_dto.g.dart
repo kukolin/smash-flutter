@@ -27,12 +27,10 @@ Map<String, dynamic> _$RoomDTOToJson(RoomDTO instance) => <String, dynamic>{
     };
 
 Map<String, dynamic> toASD(dynamic e){
-  Map<dynamic, dynamic> asd = e as dynamic;
-  Map<String, dynamic> asd2 = {};
-  asd.forEach((key, value) {
-    asd2[key.toString()] = value;
-  });
-  return asd2;
+      Map<dynamic, dynamic> asd = e as dynamic;
+      Map<String, dynamic> asd2 = {};
+      asd.forEach((key, value) {
+            asd2[key.toString()] = value;
+      });
+      return asd2;
 }
-
-
