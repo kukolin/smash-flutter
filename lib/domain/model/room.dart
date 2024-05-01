@@ -1,7 +1,6 @@
 import 'dart:core';
 
 import 'package:smash_flutter/domain/model/player.dart';
-import 'package:smash_flutter/domain/model/player_dto.dart';
 import 'package:smash_flutter/domain/model/room_dto.dart';
 
 class Room {

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smash_flutter/domain/factory/viewmodel_factory.dart';
@@ -47,6 +46,7 @@ class _SearchScreenViewState extends State<SearchScreenView> {
               ),
             ),
           ),
+          const SizedBox(height: 20,),
           ElevatedButton(
             onPressed: () => _viewModel.onSubmitButton(_controller.value.text, (Room room) => _navigateCallback(room)),
             child: const Text("Buscar"),

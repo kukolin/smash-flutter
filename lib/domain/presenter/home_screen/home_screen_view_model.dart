@@ -7,14 +7,20 @@ class HomeScreenViewModel extends ChangeNotifier{
 
   String roomId = "a";
 
-  InMemoryIdRepository _myIdRepository;
+  final InMemoryUserRepository _userDataRepository;
 
-  HomeScreenViewModel(this._myIdRepository);
+  HomeScreenViewModel(this._userDataRepository);
 
-  void onWidgetInitialize() async {
+  void onWidgetInitialize(void Function() navigateCreateNameCallback) async {
     final prefs = await SharedPreferences.getInstance();
     String myId = prefs.getString('myId') ?? await _generateIdAndSave(prefs);
-    _myIdRepository.saveMyId(myId);
+    _userDataRepository.saveMyId(myId);
+    String? myName = prefs.getString('myName');
+    if(myName == null) {
+      navigateCreateNameCallback();
+    } else {
+      _userDataRepository.saveMyName(myName);
+    }
   }
 
   Future<String> _generateIdAndSave(SharedPreferences prefs) async {

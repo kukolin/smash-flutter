@@ -1,6 +1,6 @@
 import 'package:smash_flutter/domain/factory/service_factory.dart';
-import 'package:smash_flutter/domain/model/player.dart';
 import 'package:smash_flutter/domain/model/room.dart';
+import 'package:smash_flutter/domain/presenter/create_name_screen/create_name_screen_view_model.dart';
 import 'package:smash_flutter/domain/presenter/game_screen/game_screen_view_model.dart';
 import 'package:smash_flutter/domain/presenter/home_screen/home_screen_view_model.dart';
 import 'package:smash_flutter/domain/presenter/room_screen/room_screen_view_model.dart';
@@ -8,7 +8,7 @@ import 'package:smash_flutter/domain/presenter/search_screen/search_screen_view_
 import 'package:smash_flutter/domain/unpoquitodeinfra/repositories/in_memory_id_repository.dart';
 
 class ViewModelFactory {
-  static final InMemoryIdRepository _idRepository = InMemoryIdRepository();
+  static final InMemoryUserRepository _idRepository = InMemoryUserRepository();
 
   static HomeScreenViewModel getHomePageViewModel() => HomeScreenViewModel(_idRepository);
 
@@ -18,4 +18,6 @@ class ViewModelFactory {
 
   static RoomScreenViewModel getRoomScreenViewModel(Room room) =>
       RoomScreenViewModel(room, ServiceFactory.getFirebaseService());
+
+  static CreateNameScreenViewModel getCreateNameScreenViewModel() => CreateNameScreenViewModel(_idRepository);
 }

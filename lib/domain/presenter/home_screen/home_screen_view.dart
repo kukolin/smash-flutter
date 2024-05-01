@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smash_flutter/domain/factory/viewmodel_factory.dart';
+import 'package:smash_flutter/domain/presenter/create_name_screen/create_name_screen_view.dart';
 import 'package:smash_flutter/domain/presenter/home_screen/home_screen_view_model.dart';
 import 'package:smash_flutter/domain/presenter/search_screen/search_screen_view.dart';
 import 'package:smash_flutter/domain/presenter/utils/view_utils.dart';
@@ -16,7 +17,7 @@ class _HomeScreenViewState extends State<HomeScreenView> {
 
   @override
   void initState() {
-    _viewModel.onWidgetInitialize();
+    _viewModel.onWidgetInitialize(_navigateCallback);
     super.initState();
   }
 
@@ -34,8 +35,13 @@ class _HomeScreenViewState extends State<HomeScreenView> {
             SizedBox(height: 50,),
           ]),
     );
-    // child: ChangeNotifierProvider(
-    //     create: (_) => _viewModel,
-    //     child: Consumer<HomePageViewModel>(builder: (_, viewModel, __) => Text(viewModel.roomId))));
+  }
+
+  void _navigateCallback() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const Scaffold(body: CreateNameScreenView()),
+      ),
+    );
   }
 }

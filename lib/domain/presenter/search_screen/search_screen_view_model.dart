@@ -7,10 +7,10 @@ import 'package:smash_flutter/firebase_service.dart';
 
 class SearchScreenViewModel extends ChangeNotifier {
   final FirebaseService _firebaseService;
-  final InMemoryIdRepository _idRepository;
+  final InMemoryUserRepository _userDataRepository;
   String errorMessage = "";
 
-  SearchScreenViewModel(this._firebaseService, this._idRepository);
+  SearchScreenViewModel(this._firebaseService, this._userDataRepository);
 
   Future<void> onSubmitButton(String input, void Function(Room room) redirectCallback) async {
     errorMessage = "";
@@ -38,7 +38,7 @@ class SearchScreenViewModel extends ChangeNotifier {
   }
 
   void _checkIfImJoined(Room room) {
-    var foundPlayer = room.players.firstWhereOrNull((element) => element.id == _idRepository.getMyId());
+    var foundPlayer = room.players.firstWhereOrNull((element) => element.id == _userDataRepository.getMyId());
     if (foundPlayer == null && room.players.length < 4) {
       _addMeToDatabase(room);
     } else {
@@ -48,7 +48,7 @@ class SearchScreenViewModel extends ChangeNotifier {
   }
 
   void _addMeToDatabase(Room room) {
-    var me = Player(_idRepository.getMyId(), "nombre", [], false, false);
+    var me = Player(_userDataRepository.getMyId(), _userDataRepository.getMyName(), [], false, false);
     room.players.add(me);
     _firebaseService.saveRoomData(room);
   }

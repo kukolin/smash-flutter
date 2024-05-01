@@ -1,11 +1,20 @@
-class InMemoryIdRepository {
-  String myId = "";
+class InMemoryUserRepository {
+  String _myId = "";
+  String _myName = "";
 
   void saveMyId(String myId){
-    this.myId = myId;
+    _myId = myId;
   }
 
   String getMyId(){
-    return myId;
+    return _myId;
+  }
+
+  void saveMyName(String myName){
+    _myName = myName;
+  }
+
+  String getMyName(){
+    return _myName;
   }
 }
