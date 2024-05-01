@@ -8,16 +8,16 @@ import 'package:smash_flutter/domain/presenter/search_screen/search_screen_view_
 import 'package:smash_flutter/domain/unpoquitodeinfra/repositories/in_memory_id_repository.dart';
 
 class ViewModelFactory {
-  static final InMemoryUserRepository _idRepository = InMemoryUserRepository();
+  static final InMemoryUserRepository _userDataRepository = InMemoryUserRepository();
 
-  static HomeScreenViewModel getHomePageViewModel() => HomeScreenViewModel(_idRepository);
+  static HomeScreenViewModel getHomePageViewModel() => HomeScreenViewModel(_userDataRepository);
 
-  static SearchScreenViewModel getSearchScreenViewModel() => SearchScreenViewModel(ServiceFactory.getFirebaseService(), _idRepository);
+  static SearchScreenViewModel getSearchScreenViewModel() => SearchScreenViewModel(ServiceFactory.getFirebaseService(), _userDataRepository);
 
   static GameScreenViewModel getGameScreenViewModel() => GameScreenViewModel(ServiceFactory.getFirebaseService());
 
   static RoomScreenViewModel getRoomScreenViewModel(Room room) =>
-      RoomScreenViewModel(room, ServiceFactory.getFirebaseService());
+      RoomScreenViewModel(room, ServiceFactory.getFirebaseService(), _userDataRepository);
 
-  static CreateNameScreenViewModel getCreateNameScreenViewModel() => CreateNameScreenViewModel(_idRepository);
+  static CreateNameScreenViewModel getCreateNameScreenViewModel() => CreateNameScreenViewModel(_userDataRepository);
 }

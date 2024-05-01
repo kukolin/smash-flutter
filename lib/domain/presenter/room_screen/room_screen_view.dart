@@ -48,6 +48,7 @@ class _RoomScreenViewState extends State<RoomScreenView> {
                             "Iniciar partida",
                             GameScreenView(viewModel.room),
                             extraBehaviour: _viewModel.shuffleAndAssignCard,
+                            enabled: _viewModel.startButtonEnabled(),
                           )
                       ],
                     ))));
