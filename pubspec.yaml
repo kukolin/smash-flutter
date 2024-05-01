@@ -40,7 +40,8 @@ dependencies:
   firebase_core: ^2.30.0
   provider: 6.1.2
   collection: ^1.18.0
-
+  shared_preferences: ^2.2.3
+  uuid: ^4.4.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
