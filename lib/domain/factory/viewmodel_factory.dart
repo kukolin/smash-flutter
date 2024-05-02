@@ -14,7 +14,7 @@ class ViewModelFactory {
 
   static SearchScreenViewModel getSearchScreenViewModel() => SearchScreenViewModel(ServiceFactory.getFirebaseService(), _userDataRepository);
 
-  static GameScreenViewModel getGameScreenViewModel() => GameScreenViewModel(ServiceFactory.getFirebaseService());
+  static GameScreenViewModel getGameScreenViewModel() => GameScreenViewModel(ServiceFactory.getFirebaseService(), _userDataRepository);
 
   static RoomScreenViewModel getRoomScreenViewModel(Room room) =>
       RoomScreenViewModel(room, ServiceFactory.getFirebaseService(), _userDataRepository);

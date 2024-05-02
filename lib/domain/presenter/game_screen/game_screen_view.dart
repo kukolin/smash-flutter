@@ -41,7 +41,7 @@ class _GameScreenViewState extends State<GameScreenView> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: _viewModel.room.players.map((e) => _buildOpponentInfo(e)).toList(),
+        children: _viewModel.getOpponents().map((e) => _buildOpponentInfo(e)).toList(),
       ),
     );
   }
