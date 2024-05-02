@@ -1,6 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smash_flutter/domain/model/player.dart';
+import 'package:smash_flutter/domain/model/room.dart';
 import 'package:smash_flutter/domain/unpoquitodeinfra/repositories/in_memory_id_repository.dart';
+import 'package:smash_flutter/firebase_service.dart';
 import 'package:uuid/uuid.dart';
 
 class HomeScreenViewModel extends ChangeNotifier{
@@ -9,8 +14,9 @@ class HomeScreenViewModel extends ChangeNotifier{
   String myName = "";
 
   final InMemoryUserRepository _userDataRepository;
+  final FirebaseService _firebaseRepository;
 
-  HomeScreenViewModel(this._userDataRepository);
+  HomeScreenViewModel(this._firebaseRepository, this._userDataRepository);
 
   void onWidgetInitialize(void Function() navigateCreateNameCallback) async {
     final prefs = await SharedPreferences.getInstance();
@@ -40,5 +46,24 @@ class HomeScreenViewModel extends ChangeNotifier{
   void _updateName() {
     myName = _userDataRepository.getMyName();
     notifyListeners();
+  }
+
+  void onCreateButtonPressed(Future<void> Function(Room room) navigateToRoomCallback) {
+    var key = _generateRandomString(6);
+    var me = Player(_userDataRepository.getMyId(), _userDataRepository.getMyName(), [], true);
+    var newRoom = Room([], _userDataRepository.getMyId(), key, "sala", [me], false);
+    _firebaseRepository.saveRoomData(newRoom);
+    navigateToRoomCallback(newRoom);
+  }
+
+  String _generateRandomString(int length) {
+    Random random = Random();
+    String letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+    String result = '';
+    for (int i = 0; i < length; i++) {
+      result += letters[random.nextInt(letters.length)];
+    }
+    return result;
   }
 }

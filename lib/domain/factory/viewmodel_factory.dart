@@ -10,7 +10,7 @@ import 'package:smash_flutter/domain/unpoquitodeinfra/repositories/in_memory_id_
 class ViewModelFactory {
   static final InMemoryUserRepository _userDataRepository = InMemoryUserRepository();
 
-  static HomeScreenViewModel getHomePageViewModel() => HomeScreenViewModel(_userDataRepository);
+  static HomeScreenViewModel getHomePageViewModel() => HomeScreenViewModel(ServiceFactory.getFirebaseService(), _userDataRepository);
 
   static SearchScreenViewModel getSearchScreenViewModel() => SearchScreenViewModel(ServiceFactory.getFirebaseService(), _userDataRepository);
 

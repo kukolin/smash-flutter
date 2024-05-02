@@ -2,8 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smash_flutter/domain/factory/viewmodel_factory.dart';
+import 'package:smash_flutter/domain/model/room.dart';
 import 'package:smash_flutter/domain/presenter/create_name_screen/create_name_screen_view.dart';
 import 'package:smash_flutter/domain/presenter/home_screen/home_screen_view_model.dart';
+import 'package:smash_flutter/domain/presenter/room_screen/room_screen_view.dart';
 import 'package:smash_flutter/domain/presenter/search_screen/search_screen_view.dart';
 import 'package:smash_flutter/domain/presenter/utils/view_utils.dart';
 
@@ -37,28 +39,34 @@ class _HomeScreenViewState extends State<HomeScreenView> with RouteAware {
               ChangeNotifierProvider(
                 create: (_) => _viewModel,
                 child: Consumer<HomeScreenViewModel>(
-                  builder: (_, viewModel, __) => Text("Usuario: ${_viewModel.myName}", style: const TextStyle(fontSize: 20)),
+                  builder: (_, viewModel, __) =>
+                      Text("Usuario: ${_viewModel.myName}", style: const TextStyle(fontSize: 20)),
                 ),
               ),
-              const SizedBox(width: 10,),
+              const SizedBox(
+                width: 10,
+              ),
               const Icon(
                 Icons.mode_edit,
               ),
             ],
           ),
         ),
-        const Center(
+        Center(
           child: Column(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                RedirectButton("Buscar sala", SearchScreenView()),
-                SizedBox(
+                const RedirectButton("Buscar sala", SearchScreenView()),
+                const SizedBox(
                   height: 20,
                 ),
-                RedirectButton("Crear sala", SearchScreenView()),
-                SizedBox(
+                ElevatedButton(
+                  onPressed: () => _viewModel.onCreateButtonPressed(_navigateToRoomCallback),
+                  child: const Text("Crear sala", style: TextStyle(fontSize: 20)),
+                ),
+                const SizedBox(
                   height: 50,
                 ),
               ]),
@@ -71,6 +79,14 @@ class _HomeScreenViewState extends State<HomeScreenView> with RouteAware {
     return Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => Scaffold(body: CreateNameScreenView(allowBack: allowBack)),
+      ),
+    );
+  }
+
+  Future<void> _navigateToRoomCallback(Room room) {
+    return Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => Scaffold(body: RoomScreenView(room)),
       ),
     );
   }
