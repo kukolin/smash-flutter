@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:smash_flutter/domain/model/player.dart';
@@ -36,7 +37,15 @@ class GameScreenViewModel extends ChangeNotifier {
   StreamSubscription<DatabaseEvent> _initializeDatabaseForRoom(Room initialRoom) =>
       firebaseService.initializeDatabaseForRoom(initialRoom.key);
 
-  List<Player> getOpponents() {
-    return room.players.takeWhile((p) => p.id != _userDataRepository.getMyId()).toList();
+  List<Player> getOpponents() => room.players.takeWhile((p) => p.id != _userDataRepository.getMyId()).toList();
+
+  Player? getMe() => room.players.firstWhereOrNull((p) => p.id != _userDataRepository.getMyId());
+
+  int getMyCardQuantity() {
+    return getMe()?.cards.length ?? 0;
+  }
+
+  int getTurnNumber() {
+    return room.cardStack.length % 15;
   }
 }
