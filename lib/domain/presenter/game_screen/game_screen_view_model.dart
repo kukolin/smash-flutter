@@ -15,6 +15,9 @@ class GameScreenViewModel extends ChangeNotifier {
 
   final InMemoryUserRepository _userDataRepository;
 
+  bool get isDrawCardEnabled => _isDrawCardEnabled;
+  bool _isDrawCardEnabled = false;
+
   GameScreenViewModel(this.firebaseService, this._userDataRepository);
 
   void onWidgetInitialize(Room initialRoom) {
@@ -47,5 +50,18 @@ class GameScreenViewModel extends ChangeNotifier {
 
   int getTurnNumber() {
     return room.cardStack.length % 15;
+  }
+
+  void onDrawCardTaped() {
+    _isDrawCardEnabled = false;
+    notifyListeners();
+    var orderedPlayers = room.players.sortedBy((element) => element.id);
+    var myIndex = orderedPlayers.indexWhere((p) => p.id == _userDataRepository.getMyId());
+    if(orderedPlayers.length == myIndex + 1) {
+      room.currentTurn = orderedPlayers[0].id;
+    } else {
+      room.currentTurn = orderedPlayers[myIndex + 1].id;
+    }
+    firebaseService.saveRoomData(room);
   }
 }

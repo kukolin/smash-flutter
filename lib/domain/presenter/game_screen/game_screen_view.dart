@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:smash_flutter/domain/factory/viewmodel_factory.dart';
 import 'package:smash_flutter/domain/model/player.dart';
@@ -30,7 +31,7 @@ class _GameScreenViewState extends State<GameScreenView> {
       children: [
         _buildHeader(),
         _buildBody(),
-        _buildCardButton(),
+        _buildFooter(),
       ],
     );
   }
@@ -64,20 +65,29 @@ class _GameScreenViewState extends State<GameScreenView> {
     );
   }
 
-  Widget _buildCardButton() {
+  Widget _buildFooter() {
     return Expanded(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const Divider(color: Colors.black),
-          SizedBox( height: 50,
+          SizedBox(
+            height: 50,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text("Tus cartas: ${_viewModel.getMyCardQuantity()}", style: const TextStyle(fontSize: 25)),
-                const VerticalDivider(color: Colors.black,width: 2,),
-                Text("Turno n°: ${_viewModel.getTurnNumber()}", style: const TextStyle(fontSize: 25)),
+                Expanded(
+                    child: Center(
+                        child: Text("Tus cartas: ${_viewModel.getMyCardQuantity()}",
+                            style: const TextStyle(fontSize: 25)))),
+                const VerticalDivider(
+                  color: Colors.black,
+                  width: 2,
+                ),
+                Expanded(
+                    child: Center(
+                        child: Text("Turno n°: ${_viewModel.getTurnNumber()}", style: const TextStyle(fontSize: 25)))),
               ],
             ),
           ),
@@ -85,7 +95,7 @@ class _GameScreenViewState extends State<GameScreenView> {
             child: Padding(
               padding: const EdgeInsets.only(bottom: 50.0),
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: _viewModel.onDrawCardTaped,
                 style: ElevatedButton.styleFrom(shape: const CircleBorder(), padding: const EdgeInsets.all(60)),
                 child: const Text(
                   "Tirar carta",
