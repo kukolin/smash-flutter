@@ -20,7 +20,8 @@ class _RoomScreenViewState extends State<RoomScreenView> {
 
   @override
   void initState() {
-    _viewModel = ViewModelFactory.getRoomScreenViewModel(widget.foundRoom);
+    _viewModel = ViewModelFactory.getRoomScreenViewModel(widget.foundRoom, _redirectCallback);
+    _viewModel.onWidgetInitialize();
     super.initState();
   }
 
@@ -58,6 +59,14 @@ class _RoomScreenViewState extends State<RoomScreenView> {
   Column buildPlayersColumn() {
     return Column(
       children: _viewModel.room.players.map((e) => Text(e.name, style: const TextStyle(fontSize: 20))).toList(),
+    );
+  }
+
+  void _redirectCallback() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => Scaffold(body: GameScreenView(_viewModel.room)),
+      ),
     );
   }
 }

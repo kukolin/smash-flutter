@@ -11,15 +11,20 @@ class RoomScreenViewModel extends ChangeNotifier {
   final FirebaseService _firebaseService;
   final List<StreamSubscription> _disposeBag = [];
   final InMemoryUserRepository _userDataRepository;
+  final void Function() redirectCallback;
 
   Room room;
 
-  RoomScreenViewModel(this.room, this._firebaseService, this._userDataRepository);
+
+  RoomScreenViewModel(this.room, this._firebaseService, this._userDataRepository, this.redirectCallback);
 
   void onWidgetInitialize() {
     var subscription2 = _firebaseService.initializeDatabaseForRoom(room.key);
     var subscription1 = _firebaseService.roomController.stream.listen((newRoom) {
       room = newRoom;
+      if(room.started) {
+        redirectCallback();
+      }
       notifyListeners();
     });
     _disposeBag.add(subscription1);
