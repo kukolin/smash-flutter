@@ -18,12 +18,15 @@ class GameScreenViewModel extends ChangeNotifier {
   bool get isDrawCardEnabled => _isDrawCardEnabled;
   bool _isDrawCardEnabled = false;
 
+  String myId = "";
+
   GameScreenViewModel(this.firebaseService, this._userDataRepository);
 
   void onWidgetInitialize(Room initialRoom) {
     _initializeRoom(initialRoom);
     _subscribe();
     _initializeDatabaseForRoom(initialRoom);
+    myId = _userDataRepository.getMyId();
   }
 
   void _initializeRoom(Room initialRoom) {
@@ -40,7 +43,11 @@ class GameScreenViewModel extends ChangeNotifier {
   StreamSubscription<DatabaseEvent> _initializeDatabaseForRoom(Room initialRoom) =>
       firebaseService.initializeDatabaseForRoom(initialRoom.key);
 
-  List<Player> getOpponents() => room.players.takeWhile((p) => p.id != _userDataRepository.getMyId()).toList();
+  List<Player> getOpponents() {
+    return room.players.skipWhile(
+            (p) => p.id == myId
+    ).toList();
+  }
 
   Player? getMe() => room.players.firstWhereOrNull((p) => p.id != _userDataRepository.getMyId());
 
