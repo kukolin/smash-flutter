@@ -9,7 +9,6 @@ import 'package:smash_flutter/domain/unpoquitodeinfra/repositories/in_memory_id_
 import 'package:smash_flutter/firebase_service.dart';
 
 class GameScreenViewModel extends ChangeNotifier {
-
   Room room = Room.empty();
   FirebaseService firebaseService;
 
@@ -44,9 +43,7 @@ class GameScreenViewModel extends ChangeNotifier {
       firebaseService.initializeDatabaseForRoom(initialRoom.key);
 
   List<Player> getOpponents() {
-    return room.players.skipWhile(
-            (p) => p.id == myId
-    ).toList();
+    return room.players.skipWhile((p) => p.id == myId).toList();
   }
 
   Player? getMe() => room.players.firstWhereOrNull((p) => p.id != _userDataRepository.getMyId());
@@ -64,7 +61,7 @@ class GameScreenViewModel extends ChangeNotifier {
     notifyListeners();
     var orderedPlayers = room.players.sortedBy((element) => element.id);
     var myIndex = orderedPlayers.indexWhere((p) => p.id == _userDataRepository.getMyId());
-    if(orderedPlayers.length == myIndex + 1) {
+    if (orderedPlayers.length == myIndex + 1) {
       room.currentTurn = orderedPlayers[0].id;
     } else {
       room.currentTurn = orderedPlayers[myIndex + 1].id;
