@@ -68,5 +68,6 @@ class _RoomScreenViewState extends State<RoomScreenView> {
         builder: (context) => Scaffold(body: GameScreenView(_viewModel.room)),
       ),
     );
+    _viewModel.onWidgetDestroy();
   }
 }
