@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:smash_flutter/domain/model/player.dart';
 import 'package:smash_flutter/domain/model/room.dart';
@@ -71,13 +70,30 @@ class GameScreenViewModel extends ChangeNotifier {
   void onDrawCardTaped() {
     room.currentTurn = "";
     notifyListeners();
-    var orderedPlayers = room.players.sortedBy((element) => element.id);
+    _advanceTurn();
+    _addCardToStack();
+    _dropThatCard();
+    firebaseService.saveRoomData(room);
+  }
+
+  void _advanceTurn() {
+    var orderedPlayers = _getPlayersSorted();
     var myIndex = orderedPlayers.indexWhere((p) => p.id == _userDataRepository.getMyId());
     if (orderedPlayers.length == myIndex + 1) {
       room.currentTurn = orderedPlayers[0].id;
     } else {
       room.currentTurn = orderedPlayers[myIndex + 1].id;
     }
-    firebaseService.saveRoomData(room);
   }
+
+  void _addCardToStack() {
+    final lastCard = room.players.firstWhereOrNull((p) => p.id != _userDataRepository.getMyId())!.cards.last;
+    room.cardStack.add(lastCard);
+  }
+
+  void _dropThatCard() {
+    room.players.firstWhereOrNull((p) => p.id != _userDataRepository.getMyId())!.cards.removeLast();
+  }
+
+  List<Player> _getPlayersSorted() => room.players.sortedBy((element) => element.id);
 }
