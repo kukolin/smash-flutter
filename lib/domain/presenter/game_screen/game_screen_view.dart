@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:smash_flutter/domain/factory/viewmodel_factory.dart';
 import 'package:smash_flutter/domain/model/player.dart';
 import 'package:smash_flutter/domain/model/room.dart';
@@ -24,16 +25,26 @@ class _GameScreenViewState extends State<GameScreenView> {
   }
 
   @override
+  void dispose() {
+    _viewModel.onWidgetDestroy();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        _buildHeader(),
-        _buildBody(),
-        _buildFooter(),
-      ],
-    );
+    return ChangeNotifierProvider(
+        create: (_) => _viewModel,
+        child: Consumer<GameScreenViewModel>(
+          builder: (_, __, ___) => Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              _buildHeader(),
+              _buildBody(),
+              _buildFooter(),
+            ],
+          ),
+        ));
   }
 
   Widget _buildHeader() {
@@ -95,7 +106,7 @@ class _GameScreenViewState extends State<GameScreenView> {
             child: Padding(
               padding: const EdgeInsets.only(bottom: 50.0),
               child: ElevatedButton(
-                onPressed: _viewModel.onDrawCardTaped,
+                onPressed: _viewModel.isMyTurn() ? _viewModel.onDrawCardTaped : null,
                 style: ElevatedButton.styleFrom(shape: const CircleBorder(), padding: const EdgeInsets.all(60)),
                 child: const Text(
                   "Tirar carta",

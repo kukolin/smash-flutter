@@ -14,18 +14,14 @@ class GameScreenViewModel extends ChangeNotifier {
 
   final InMemoryUserRepository _userDataRepository;
 
-  bool get isDrawCardEnabled => _isDrawCardEnabled;
-  bool _isDrawCardEnabled = false;
-
-  String myId = "";
+  List<StreamSubscription> subscriptions = [];
 
   GameScreenViewModel(this.firebaseService, this._userDataRepository);
 
   void onWidgetInitialize(Room initialRoom) {
     _initializeRoom(initialRoom);
-    _subscribe();
     _initializeDatabaseForRoom(initialRoom);
-    myId = _userDataRepository.getMyId();
+    _subscribe();
   }
 
   void _initializeRoom(Room initialRoom) {
@@ -33,17 +29,27 @@ class GameScreenViewModel extends ChangeNotifier {
   }
 
   void _subscribe() {
-    firebaseService.roomController.stream.listen((room) {
-      this.room.key = room.key;
+    var sus = firebaseService.roomController.stream.listen((newRoom) {
+      room = newRoom;
       notifyListeners();
     });
+    subscriptions.add(sus);
   }
 
-  StreamSubscription<DatabaseEvent> _initializeDatabaseForRoom(Room initialRoom) =>
-      firebaseService.initializeDatabaseForRoom(initialRoom.key);
+  void onWidgetDestroy() {
+    for (var element in subscriptions) {
+      element.cancel();
+    }
+    subscriptions.clear();
+  }
+
+  void _initializeDatabaseForRoom(Room initialRoom) {
+    var sus = firebaseService.initializeDatabaseForRoom(initialRoom.key);
+    subscriptions.add(sus);
+  }
 
   List<Player> getOpponents() {
-    return room.players.skipWhile((p) => p.id == myId).toList();
+    return room.players.where((p) => p.id != _userDataRepository.getMyId()).toList();
   }
 
   Player? getMe() => room.players.firstWhereOrNull((p) => p.id != _userDataRepository.getMyId());
@@ -56,8 +62,14 @@ class GameScreenViewModel extends ChangeNotifier {
     return room.cardStack.length % 15;
   }
 
+  bool isMyTurn() {
+    debugPrint(room.currentTurn);
+    debugPrint(_userDataRepository.getMyId());
+    return room.currentTurn == _userDataRepository.getMyId();
+  }
+
   void onDrawCardTaped() {
-    _isDrawCardEnabled = false;
+    room.currentTurn = "";
     notifyListeners();
     var orderedPlayers = room.players.sortedBy((element) => element.id);
     var myIndex = orderedPlayers.indexWhere((p) => p.id == _userDataRepository.getMyId());
