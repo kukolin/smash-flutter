@@ -70,6 +70,7 @@ class _GameScreenViewState extends State<GameScreenView> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
         children: [
+          if(_viewModel.gameEnded) const Text("Game Finished", style: TextStyle(fontSize: 50)) else
           Text(_viewModel.room.cardStack.lastOrNull?.toString() ?? "", style: const TextStyle(fontSize: 50)),
         ],
       ),

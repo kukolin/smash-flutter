@@ -15,6 +15,9 @@ class GameScreenViewModel extends ChangeNotifier {
 
   List<StreamSubscription> subscriptions = [];
 
+  bool _gameEnded = false;
+  bool get gameEnded => _gameEnded;
+
   GameScreenViewModel(this.firebaseService, this._userDataRepository);
 
   void onWidgetInitialize(Room initialRoom) {
@@ -70,6 +73,10 @@ class GameScreenViewModel extends ChangeNotifier {
   void onDrawCardTaped() {
     room.currentTurn = "";
     notifyListeners();
+    if(_checkWinConditions()) {
+      _handleIWon();
+      return;
+    }
     _advanceTurn();
     _addCardToStack();
     _dropThatCard();
@@ -96,4 +103,10 @@ class GameScreenViewModel extends ChangeNotifier {
   }
 
   List<Player> _getPlayersSorted() => room.players.sortedBy((element) => element.id);
+
+  bool _checkWinConditions() => getMyCardQuantity() <= 1;
+
+  void _handleIWon() {
+    _gameEnded = true;
+  }
 }
